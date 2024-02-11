@@ -71,6 +71,10 @@ ls -ltr /app
 npm install >> $LOGFILE
 VALIDATION $? "Downloading Dependencies Using npm install"
 
+# Setting UP Catalogue Service
+cp catalogue.service /etc/systemd/system/catalogue.service
+VALIDATION $? "Copying catalogue.service file"
+
 systemctl daemon-reload >> $LOGFILE
 VALIDATION $? "load Services"
 
