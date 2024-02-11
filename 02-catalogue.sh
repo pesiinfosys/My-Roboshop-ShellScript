@@ -68,9 +68,10 @@ VALIDATION $? "UNZIP of catalogue.zip"
 ls -ltr /app
 
 # downloading dependencies
-npm install >> $LOGFILE
+npm install >> $LOGFILE/home/centos/My-Roboshop-ShellScript
 VALIDATION $? "Downloading Dependencies Using npm install"
 
+cd -
 # Setting UP Catalogue Service
 cp catalogue.service /etc/systemd/system/catalogue.service
 VALIDATION $? "Copying catalogue.service file"
