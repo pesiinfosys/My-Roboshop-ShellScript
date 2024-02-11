@@ -62,5 +62,8 @@ cd -
 cp roboshop.conf /etc/nginx/default.d/roboshop.conf >> $LOGFILE
 VALIDATION $? "Copying roboshop.conf file was" 
 
+systemctl restart nginx 
+VALIDATION $? "Restarting nginx service was"
+
 
 
