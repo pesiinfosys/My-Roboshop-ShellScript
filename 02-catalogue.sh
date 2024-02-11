@@ -44,7 +44,7 @@ VALIDATION $? "Installing Nodejs"
 id -u roboshop
 if [ $? -ne 0 ];
 then
-    echo -e "$B creating roboshop userv $N" >> $LOGFILE
+    echo -e "$B creating roboshop user $N" >> $LOGFILE
     useradd roboshop
 else
     echo -e "$Y roboshop user exists $N" >> $LOGFILE
