@@ -87,7 +87,7 @@ VALIDATION $? "Start Catalogue Service"
 
 # Installing mongodb-client
 cp mongo.repo /etc/yum.repos.d/mongo.repo >> $LOGFILE
-VALIDATION $? "copying mongo.rep file"
+VALIDATION $? "copying mongo.repo file"
 
 yum install mongodb-org-shell -y >> $LOGFILE
 VALIDATION $? "Installing mongodb client"
