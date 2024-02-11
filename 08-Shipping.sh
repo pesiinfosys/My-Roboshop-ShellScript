@@ -35,7 +35,7 @@ echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
 echo -e "$B###############################################$N" >> $LOGFILE
 
-yum install maven -y
+yum install maven -y >> $LOGFILE
 VALIDATION $? "maven installation"
 
 # Creating System User
