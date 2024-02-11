@@ -84,9 +84,9 @@ VALIDATION $? "Enable Catalogue Service"
 
 systemctl start catalogue >> $LOGFILE
 VALIDATION $? "Start Catalogue Service"
-echo "present dir: $(pwd)"
+
 # Installing mongodb-client
-cp mongo.rep /etc/yum.repos.d/mongo.repo >> $LOGFILE
+cp mongo.repo /etc/yum.repos.d/mongo.repo >> $LOGFILE
 VALIDATION $? "copying mongo.rep file"
 
 yum install mongodb-org-shell -y >> $LOGFILE
