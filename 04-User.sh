@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Variable Declaration
+LOGDIR=/tmp
+DATE=$(date +%F::%H:%M)
+SCRIPT=$0
+LOGFILE=$LOGDIR/$SCRIPT-$DATE.log
+USERID=$(id -u)
+
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+B="\e[34m"
+N="\e[0m"
+
+# Function Declaration
+VALIDATION(){
+    if [ $1 -ne 0 ];
+    then
+        echo -e "$2 Was.... $R FAIL $N"
+        exit 1
+    else
+        echo -e "$2 Was.... $G SUCCESS $N"
+    fi
+}
+
+# Main Section
+if [ $USERID -ne 0 ];
+then 
+    echo -e "$Y ERROR:$N... Need root privilages" 
+    exit 1 
+fi
+echo -e "Executing The Script... $Y For log verification check $LOGFILE $N"
+echo -e "$B###############################################$N" > $LOGFILE
+echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
+echo -e "$B###############################################$N" >> $LOGFILE
+
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+VALIDATION $? "Set-Up Nodejs repo"
+
+yum install nodejs -y
+VALIDATION $? "Install Nodejs"
+
+# Creating System User
+id -u roboshop
+if [ $? -ne 0 ];
+then
+    echo -e "$B Creating Sroboshop User $N"
+    useradd roboshop
+else
+    echo -e "$Y User roboshop Already Exists $N"
+fi
+
+# Creating App Directory
+if [ ! -d /app ];
+then
+    echo -e "$B Creating /app directory $N"
+    mkdir /app
+else 
+    echo -e "$Y directory /app already exists"
+fi
+
+curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip
+VALIDATION $? "Downloading Apllication Code"
+
+unzip /tmp/user.zip
+VALIDATION $? "Extracting user.zip"
+
+cd /app 
+
+npm install 
+VALIDATION $? "Installing Dependencies"
+
+# Creating User service
+cd -
+cp user.service /etc/systemd/system/user.service
+VALIDATION $? "Copying user.service file"
+
+systemctl daemon-reload
+VALIDATION $? "loading services"
+
+systemctl enable user 
+VALIDATION $? "Enable User Service"
+
+systemctl start user 
+VALIDATION $? "Starting User Service"
+
+# Installing MongoDB Client
+yum install mongodb-org-shell -y
+VALIDATION $? "mongodb client installation"
+
+mongo --host mongodb.cloudevops.cloud < /app/schema/user.js
+VALIDATION $? "Loading Schema into MongoDB"
+
