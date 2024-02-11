@@ -31,9 +31,9 @@ then
     exit 1 
 fi
 
-echo -e "$B###############################################$N" &>> $LOGFILE
+echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
-echo -e "$B###############################################$N" &>> $LOGFILE
+echo -e "$B###############################################$N" >> $LOGFILE
 
 cp mongo.repo /etc/yum.repos.d/ &>> $LOGFILE
 VALIDATION $? "Copying mongo.repo"
