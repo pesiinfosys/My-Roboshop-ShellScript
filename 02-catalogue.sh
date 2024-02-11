@@ -30,7 +30,7 @@ then
     echo -e "$Y ERROR:$N... Need root privilages" 
     exit 1 
 fi
-
+echo -e "Executing The Script... $Y For log verification check $LOGFILE $N"
 echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
 echo -e "$B###############################################$N" >> $LOGFILE
@@ -65,7 +65,6 @@ VALIDATION $? "Download the application code"
 cd /app 
 unzip /tmp/catalogue.zip >> $LOGFILE
 VALIDATION $? "UNZIP of catalogue.zip"
-ls -ltr /app
 
 # downloading dependencies
 npm install >> $LOGFILE
@@ -73,7 +72,7 @@ VALIDATION $? "Downloading Dependencies Using npm install"
 
 cd -
 # Setting UP Catalogue Service
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp catalogue.service /etc/systemd/system/catalogue.service >> $LOGFILE
 VALIDATION $? "Copying catalogue.service file"
 
 systemctl daemon-reload >> $LOGFILE
@@ -95,3 +94,4 @@ VALIDATION $? "Installing mongodb client"
 # Load schema
 mongo --host mongodb.cloudevops.cloud < /app/schema/catalogue.js >> $LOGFILE
 VALIDATION $? "Loading Schema to MongoDB sever"
+
