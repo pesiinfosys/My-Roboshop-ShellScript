@@ -35,31 +35,31 @@ echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
 echo -e "$B###############################################$N" >> $LOGFILE
 
-yum install nginx -y
+yum install nginx -y >> $LOGFILE
 VALIDATION $? "Installing Nginx Was"
 
-systemctl enable nginx
+systemctl enable nginx >> $LOGFILE
 VALIDATION $? " Enabling Nginx service Was"
 
-systemctl start nginx
+systemctl start nginx >> $LOGFILE
 VALIDATION $? "Starting Nginx Service was"
 
-rm -rf /usr/share/nginx/html/*
+rm -rf /usr/share/nginx/html/* >> $LOGFILE
 VALIDATION $? "Removing Default content was"
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip
+curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip >> $LOGFILE
 VALIDATION $? "Downloading Web content was"
 
 cd /usr/share/nginx/html
-unzip /tmp/web.zip
+unzip /tmp/web.zip >> $LOGFILE
 VALIDATION $? "Extract the frontend content was"
 
 # Setting-Up Nginx Reverse Proxy Configuration
-touch /etc/nginx/default.d/roboshop.conf
+touch /etc/nginx/default.d/roboshop.conf >> $LOGFILE
 VALIDATION $? "Creating roboshop.conf file was"
 
 cd -
-cp roboshop.conf /etc/nginx/default.d/roboshop.conf
+cp roboshop.conf /etc/nginx/default.d/roboshop.conf >> $LOGFILE
 VALIDATION $? "Copying roboshop.conf file was" 
 
 
