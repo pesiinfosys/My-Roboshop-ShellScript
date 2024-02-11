@@ -87,7 +87,7 @@ VALIDATION $? "starting shipping service"
 yum install mysql -y >> $LOGFILE 
 VALIDATION $? "Installing mysql client"
 
-mysql -h mysql.cloudevops.cloud -uroot -pRoboShop@1 < /app/schema/shipping.sql- >> $LOGFILE 
+mysql -h mysql.cloudevops.cloud -uroot -pRoboShop@1 < /app/schema/shipping.sql >> $LOGFILE 
 VALIDATION $? "Loading Schema"
 
 systemctl restart shipping
