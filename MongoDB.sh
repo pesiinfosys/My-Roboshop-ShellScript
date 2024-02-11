@@ -10,6 +10,7 @@ USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
+B="\e[34m"
 N="\e[0m"
 
 # Function Declaration
@@ -30,21 +31,25 @@ then
     exit 1 
 fi
 
-cp mongo.repo /etc/yum.repos.d/ > $LOGFILE
+echo -e "$B###############################################$N"
+echo -e "$Y Script Execution At: $DATE by $(id)"
+echo -e "$B###############################################$N"
+
+cp mongo.repo /etc/yum.repos.d/ &>> $LOGFILE
 VALIDATION $? "Copying mongo.repo"
 
-yum install mongodb-org -y >> $LOGFILE
+yum install mongodb-org -y &>> $LOGFILE
 VALIDATION $? "install mongodb"
 
-systemctl enable mongod >> $LOGFILE
+systemctl enable mongod &>> $LOGFILE
 VALIDATION $? "mogod sevice enable"
 
-systemctl start mongod >> $LOGFILE
+systemctl start mongod &>> $LOGFILE
 VALIDATION $? "mongod service start"
 
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf >> $LOGFILE
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $LOGFILE
 VALIDATION $? "Update listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf"
 
-systemctl restart mongod  >> $LOGFILE
+systemctl restart mongod  &>> $LOGFILE
 VALIDATION $? "mongod service restart"
 
