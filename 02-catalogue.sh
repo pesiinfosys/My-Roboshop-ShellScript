@@ -44,19 +44,19 @@ VALIDATION $? "Installing Nodejs"
 USER=$(id -u roboshop)
 if [ $USER -ne 0 ];
 then
-    echo "$B creating roboshop userv $N" >> $LOGFILE
+    echo -e "$B creating roboshop userv $N" >> $LOGFILE
     useradd roboshop
 else
-    echo "$Y roboshop user exists $N" >> $LOGFILE
+    echo -e "$Y roboshop user exists $N" >> $LOGFILE
 fi
 
 # creating app directory
 if [ ! -d /app ];
 then
-    echo "$B Creating app directory $N" >> $LOGFILE
+    echo -e "$B Creating app directory $N" >> $LOGFILE
     mkdir /app
 else
-    echo "$Y /app directory exists $N" >> $LOGFILE
+    echo -e "$Y /app directory exists $N" >> $LOGFILE
 fi
 
 curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip >> $LOGFILE
@@ -68,7 +68,7 @@ VALIDATION $? "UNZIP of catalogue.zip"
 ls -ltr /app
 
 # downloading dependencies
-npm install >> $LOGFILE/home/centos/My-Roboshop-ShellScript
+npm install >> $LOGFILE
 VALIDATION $? "Downloading Dependencies Using npm install"
 
 cd -
