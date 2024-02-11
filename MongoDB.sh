@@ -30,21 +30,21 @@ then
     exit 1 
 fi
 
-cp mongo.repo /etc/yum.repos.d/
+cp mongo.repo /etc/yum.repos.d/ > $LOGFILE
 VALIDATION $? "Copying mongo.repo"
 
-yum install mongodb-org -y
+yum install mongodb-org -y >> $LOGFILE
 VALIDATION $? "install mongodb"
 
-systemctl enable mongod
+systemctl enable mongod >> $LOGFILE
 VALIDATION $? "mogod sevice enable"
 
-systemctl start mongod
+systemctl start mongod >> $LOGFILE
 VALIDATION $? "mongod service start"
 
-sed -i 's/127.0.0.1/0.0.0.0/'/etc/mongod.conf
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf >> $LOGFILE
 VALIDATION $? "Update listen address from 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf"
 
-systemctl restart mongod
+systemctl restart mongod  >> $LOGFILE
 VALIDATION $? "mongod service restart"
 
