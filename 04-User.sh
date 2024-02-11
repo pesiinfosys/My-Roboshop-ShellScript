@@ -35,21 +35,21 @@ echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
 echo -e "$B###############################################$N" >> $LOGFILE
 
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash >> $LOGFILE
 VALIDATION $? "Set-Up Nodejs repo"
 
-yum install nodejs -y
+yum install nodejs -y >> $LOGFILE
 VALIDATION $? "Install Nodejs"
 
 # Creating System User
-id -u roboshop
+id -u roboshop >> $LOGFILE
 if [ $? -ne 0 ];
 then
-    echo -e "$B Creating Sroboshop User $N"
-    useradd roboshop
+    echo -e "$B Creating Sroboshop User $N" 
+    useradd roboshop 
 else
     echo -e "$Y User roboshop Already Exists $N"
-fi
+fi >> $LOGFILE
 
 # Creating App Directory
 if [ ! -d /app ];
@@ -58,37 +58,36 @@ then
     mkdir /app
 else 
     echo -e "$Y directory /app already exists"
-fi
+fi >> $LOGFILE
 
-curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip
+curl -L -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  >> $LOGFILE
 VALIDATION $? "Downloading Apllication Code"
 
-unzip /tmp/user.zip
+cd /app
+unzip /tmp/user.zip  >> $LOGFILE
 VALIDATION $? "Extracting user.zip"
 
-cd /app 
-
-npm install 
+npm install  >> $LOGFILE
 VALIDATION $? "Installing Dependencies"
 
 # Creating User service
 cd -
-cp user.service /etc/systemd/system/user.service
+cp user.service /etc/systemd/system/user.service >> $LOGFILE
 VALIDATION $? "Copying user.service file"
 
-systemctl daemon-reload
+systemctl daemon-reload >> $LOGFILE
 VALIDATION $? "loading services"
 
-systemctl enable user 
+systemctl enable user >> $LOGFILE 
 VALIDATION $? "Enable User Service"
 
-systemctl start user 
+systemctl start user >> $LOGFILE 
 VALIDATION $? "Starting User Service"
 
 # Installing MongoDB Client
-yum install mongodb-org-shell -y
+yum install mongodb-org-shell -y >> $LOGFILE
 VALIDATION $? "mongodb client installation"
 
-mongo --host mongodb.cloudevops.cloud < /app/schema/user.js
+mongo --host mongodb.cloudevops.cloud < /app/schema/user.js >> $LOGFILE
 VALIDATION $? "Loading Schema into MongoDB"
 
