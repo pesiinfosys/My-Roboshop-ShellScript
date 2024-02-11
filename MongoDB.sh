@@ -27,7 +27,7 @@ VALIDATION(){
 # Main Section
 if [ $USERID -ne 0 ];
 then 
-    echo -e "$R FAIL $N... Need root privilages" 
+    echo -e "$Y ERROR:$N... Need root privilages" 
     exit 1 
 fi
 
