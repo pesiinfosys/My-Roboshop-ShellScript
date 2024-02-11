@@ -41,8 +41,8 @@ VALIDATION $? "Downloading Node Repo"
 yum install nodejs -y >> $LOGFILE
 VALIDATION $? "Installing Nodejs"
 # creating system user roboshop
-USER=$(id -u roboshop)
-if [ $USER -ne 0 ];
+id -u roboshop
+if [ $? -ne 0 ];
 then
     echo -e "$B creating roboshop userv $N" >> $LOGFILE
     useradd roboshop
