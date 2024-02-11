@@ -24,7 +24,11 @@ VALIDATION(){
 }
 
 # Main Section
-if [ $UID -ne 0 ];then echo -e "$R FAIL $N... Need root privilages" exit 1 fi
+if [ $USERID -ne 0 ];
+then 
+    echo -e "$R FAIL $N... Need root privilages" 
+    exit 1 
+fi
 
 cp mongo.repo /etc/yum.repos.d/
 VALIDATION $? "Copying mongo.repo"
