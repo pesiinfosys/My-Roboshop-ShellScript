@@ -2,7 +2,7 @@
 
 # Variable Declaration
 LOGDIR=/tmp
-DATE=$(date +%F:%H:%M)
+DATE=$(date +%F::%H:%M)
 SCRIPT=$0
 LOGFILE=$LOGDIR/$SCRIPT-$DATE.log
 USERID=$(id -u)
