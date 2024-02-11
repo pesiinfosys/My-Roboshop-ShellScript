@@ -85,6 +85,9 @@ systemctl start user >> $LOGFILE
 VALIDATION $? "Starting User Service"
 
 # Installing MongoDB Client
+cp mongo.repo /etc/yum.repos.d/mongo.repo >> $LOGFILE
+VALIDATION $? "Copying mongo.rep file was"
+
 yum install mongodb-org-shell -y >> $LOGFILE
 VALIDATION $? "mongodb client installation"
 
