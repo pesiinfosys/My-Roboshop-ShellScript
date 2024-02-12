@@ -16,6 +16,8 @@ N="\e[0m"
 IMAGE_ID="ami-0f3c7d07486cad139"
 INSTANCE_TYPE=""
 SECURITY_GROUP_ID="sg-0e9b5d0072920d28e"
+HOSTED_ZONE_ID="Z050078223X0WDORRWD3F"
+DOMAIN_NAME="cloudevops.cloud"
 
 
 # Function Declaration
@@ -40,7 +42,7 @@ echo -e "$B###############################################$N" > $LOGFILE
 echo -e "$Y Script Execution At: $DATE by $(whoami)" &>> $LOGFILE
 echo -e "$B###############################################$N" >> $LOGFILE
 
-INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipping" "Payment" "Dispatch" "Roboshop-WebServer")
+INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "cart" "user" "shipping" "payment" "dispatch" "web")
 
 # CONDITION: For MongoDB and MySQL instance type is t3.small and for others t2.micro
 for i in ${INSTANCES[@]}
@@ -52,7 +54,22 @@ do
         INSTANCE_TYPE="t2.micro"
     fi
     echo -e "Creating Instance : $B $i $N ===> Instance Type: $Y $INSTANCE_TYPE $N" &>> $LOGFILE
-    aws ec2 run-instances --image-id $IMAGE_ID --count 1 --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" &>> $LOGFILE
-    VALIDATION $? "Creating Instance $i "
+    PRIVATE_IP_ADDRESS=$(aws ec2 run-instances --image-id $IMAGE_ID --count 1 --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" | jq -r '.Instances[0].PrivateIpAddress') &>> $LOGFILE
+    VALIDATION $? "Creating Instance $i"
     echo -e "$B ============================================================================ $N" &>> $LOGFILE
+    
+    # Creating AWS Route53 Records
+    aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch '{
+                "Comment": "CREATE a record ",
+                "Changes": [{
+                "Action": "CREATE",
+                            "ResourceRecordSet": {
+                                        "Name": "'$i.$DOMAIN_NAME'",
+                                        "Type": "A",
+                                        "TTL": 300,
+                                    "ResourceRecords": [{ "Value": "'$PRIVATE_IP_ADDRESS'"}]
+    }}]
+    }'
+
 done
+
