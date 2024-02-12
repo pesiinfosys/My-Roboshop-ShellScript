@@ -45,7 +45,8 @@ INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipp
 # CONDITION: For MongoDB and MySQL instance type is t3.small and for others t2.micro
 for i in ${INSTANCES[@]}
 do 
-    if [[ $i == "MongoDB" || $i == "MySQL" ]]
+    # if [[ $i == "MongoDB" || $i == "MySQL" ]]
+    if [ $i -eq "MongoDB" ] || [ Si -eq "MySQL" ]
     then
         INSTANCE_TYPE="t3.small"
     else
