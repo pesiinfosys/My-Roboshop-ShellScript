@@ -46,7 +46,7 @@ INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipp
 for i in ${INSTANCES[@]}
 do 
     # if [[ $i == "MongoDB" || $i == "MySQL" ]]
-    if [ $i -eq "MongoDB" ] || [ Si -eq "MySQL" ]
+    if [ $i == "MongoDB" ] || [ Si == "MySQL" ]
     then
         INSTANCE_TYPE="t3.small"
     else
