@@ -69,7 +69,7 @@ do
                                         "TTL": 300,
                                     "ResourceRecords": [{ "Value": "'$PRIVATE_IP_ADDRESS'"}]
     }}]
-    }'
+    }' &>> $LOGFILE
 
 done
 
