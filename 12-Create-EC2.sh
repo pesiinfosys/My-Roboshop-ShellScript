@@ -46,13 +46,13 @@ INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipp
 for i in ${INSTANCES[@]}
 do 
     if [[ $i == "MongoDB" || $i == "MySQL" ]]
-    # if [ $i == "MongoDB" ] || [ Si == "MySQL" ]
     then
         INSTANCE_TYPE="t3.small"
     else
         INSTANCE_TYPE="t2.micro"
     fi
-    echo -e "Creating Instance : $B $i $N ===> Instance Type: $Y $INSTANCE_TYPE $N"
-    # aws ec2 run-instances --image-id $IMAGE_ID --count 1 --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID
-
+    echo -e "Creating Instance : $B $i $N ===> Instance Type: $Y $INSTANCE_TYPE $N" &>> $LOGFILE
+    aws ec2 run-instances --image-id $IMAGE_ID --count 1 --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" &>> $LOGFILE
+    VALIDATION $? "Creating Instance $i "
+    echo -e "$B ============================================================================ $N" &>> $LOGFILE
 done
