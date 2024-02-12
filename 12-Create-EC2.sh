@@ -37,7 +37,16 @@ echo -e "$B###############################################$N" >> $LOGFILE
 
 INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipping" "Payment" "Dispatch" "Roboshop-WebServer")
 
+# CONDITION: For MongoDB and MySQL instance type is t3.small and for others t2.micro
 for i in ${INSTANCES[@]}
 do 
-    echo "Creating Instance : $B $i $N"
+    if [ $i -eq "MongoDB" || $i -eq "MySQL" ];
+    then
+        INSTANCE_TYPE="t3.small"
+    else
+        INSTANCE_TYPE="t2.micro"
+    fi
+    echo -e "Creating Instance : $B $i $N ===> Instance Type: $Y $INSTANCE_TYPE $N"
+    # aws ec2 run-instances --image-id ami-0f3c7d07486cad139 --count 1 --instance-type $INSTANCE_TYPE --security-group-ids sg-0e9b5d0072920d28e 
+
 done
