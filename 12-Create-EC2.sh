@@ -13,6 +13,11 @@ Y="\e[33m"
 B="\e[34m"
 N="\e[0m"
 
+IMAGE_ID="ami-0f3c7d07486cad139"
+INSTANCE_TYPE=""
+SECURITY_GROUP_ID="sg-0e9b5d0072920d28e"
+
+
 # Function Declaration
 VALIDATION(){
     if [ $1 -ne 0 ];
@@ -40,13 +45,13 @@ INSTANCES=("MongoDB" "Redis" "MySQL" "RabbitMQ" "Catalogue" "Cart" "User" "Shipp
 # CONDITION: For MongoDB and MySQL instance type is t3.small and for others t2.micro
 for i in ${INSTANCES[@]}
 do 
-    if [ [$i == "MongoDB" || $i == "MySQL"] ];
+    if [ [ '$i' == "MongoDB" || '$i' == "MySQL" ] ]
     then
         INSTANCE_TYPE="t3.small"
     else
         INSTANCE_TYPE="t2.micro"
     fi
     echo -e "Creating Instance : $B $i $N ===> Instance Type: $Y $INSTANCE_TYPE $N"
-    # aws ec2 run-instances --image-id ami-0f3c7d07486cad139 --count 1 --instance-type $INSTANCE_TYPE --security-group-ids sg-0e9b5d0072920d28e 
+    # aws ec2 run-instances --image-id $IMAGE_ID --count 1 --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID
 
 done
